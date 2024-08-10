@@ -1,26 +1,28 @@
 import {OfferCardType} from '../types/offer.ts';
 import {Link} from 'react-router-dom';
-import {AppRoute} from '../const.tsx';
+import {AppRoute, RequestStatus} from '../const.tsx';
 import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import {useState} from 'react';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
-import {selectedSortedOffers, setCurrentCity} from '../features/rental/rentalSlice.ts';
+import {selectedSortedOffers, setCurrentCity} from '../features/slices/offers.ts';
 import {SortOptions} from '../components/app/sort-options/sort-options.tsx';
-
-type MainPageOffersProps = {
-  offers: OfferCardType[];
-}
+import Spinner from '../components/app/spinner/spinner.tsx';
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
-function Main({offers} : MainPageOffersProps): JSX.Element {
+function Main(): JSX.Element {
   const dispatch = useAppDispatch();
-  const currentCity = useAppSelector((state) => state.currentCity);
+  const status = useAppSelector((state) => state.offers.status);
+  const currentCity = useAppSelector((state) => state.offers.currentCity);
   const sortOffers = useAppSelector(selectedSortedOffers);
   const filteredOffers = sortOffers.filter((offer) => offer.city.name === currentCity);
 
   const [activeOffer, setActiveOffer] = useState<OfferCardType | null>(null);
+
+  if (status === RequestStatus.Loading) {
+    return <Spinner />;
+  }
 
   const handleOfferHover = (offer?: OfferCardType) => {
     setActiveOffer(offer || null);
@@ -92,7 +94,7 @@ function Main({offers} : MainPageOffersProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <Map offers={filteredOffers} activeOffer={activeOffer} city={offers[0].city} />
+              <Map offers={filteredOffers} activeOffer={activeOffer} city={filteredOffers[0].city} />
             </div>
           </div>
         </div>

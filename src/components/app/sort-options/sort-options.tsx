@@ -1,6 +1,7 @@
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {setSortOption, SortOption} from '../../../features/rental/rentalSlice.ts';
+import {setSortOption} from '../../../features/slices/offers.ts';
 import {useState} from 'react';
+import {SortOption} from '../../../types/offer.ts';
 
 const sortingTypes = [
   'Popular',
@@ -11,7 +12,7 @@ const sortingTypes = [
 
 export const SortOptions = () => {
   const dispatch = useAppDispatch();
-  const sortOption = useAppSelector((state) => state.sortOption);
+  const sortOption = useAppSelector((state) => state.offers.sortOption);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChangeIsOpen = () => {
