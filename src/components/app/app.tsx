@@ -6,29 +6,21 @@ import {AppRoute, AuthorizationStatus} from '../../const.tsx';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import PrivateRoute from './private-route/private-route.tsx';
 import NotFound from '../../pages/not-found.tsx';
-import {getMockFavoriteOfferCards, OfferCardType} from '../../types/offer.ts';
-import {useEffect} from 'react';
-import {getOffers} from '../../features/rental/rentalSlice.ts';
-import {useAppDispatch} from './hooks';
+import {getFavoriteOfferCards} from '../../types/offer.ts';
+import {useAppSelector} from './hooks';
 
-type AppOffersProps =
- {
-  offers: OfferCardType[];
-}
+export default function App(): JSX.Element {
 
-export default function App({offers}: AppOffersProps): JSX.Element {
-  const favoriteOfferCards = getMockFavoriteOfferCards();
-  const dispatch = useAppDispatch();
+  const offers = useAppSelector((state) => state.offers.offers);
+  console.log(offers)
+  const favoriteOfferCards = getFavoriteOfferCards(offers);
 
-  useEffect(() => {
-    dispatch(getOffers());
-  }, []);
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<Main offers={offers}/>}
+          element={<Main />}
         />
         <Route
           path={AppRoute.Login}

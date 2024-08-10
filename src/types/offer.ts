@@ -1,5 +1,4 @@
 import {UserType} from './user-type.ts';
-import {newOffers, offers} from '../mocks/offers.tsx';
 
 export type LocationType = {
   latitude: number;
@@ -37,8 +36,8 @@ export type OfferType = OfferCardType & {
   maxAdults: number;
 };
 
+export type SortOption = 'Popular' | 'Price: low to high' | 'Price: high to low' | 'Top rated first';
 
-export const getMockOfferCards = () => offers;
-export const getMockFavoriteOfferCards = () => offers.filter((offerCard) => offerCard.isFavorite);
-export const getMockNearOfferCardsById = (offerId: string | undefined) => newOffers.filter((offer) => offer.id !== offerId).slice(0, 3);
-export const getMockOfferById = (offerId: string | undefined) => newOffers.find((offer) => offer.id === offerId);
+export const getFavoriteOfferCards = (offers: OfferCardType[]) => offers.filter((offerCard) => offerCard.isFavorite);
+export const getNearOfferCardsById = (offers: OfferType[], offerId: string | undefined) => offers.filter((offer) => offer.id !== offerId).slice(0, 3);
+export const getOfferById = (offers: OfferType[], offerId: string | undefined) => offers.find((offer) => offer.id === offerId);
