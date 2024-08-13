@@ -1,5 +1,5 @@
 import {OfferCardType} from '../types/offer.ts';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {AppRoute, RequestStatus} from '../const.tsx';
 import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import {useState} from 'react';
@@ -8,6 +8,7 @@ import {useAppDispatch, useAppSelector} from '../components/app/hooks';
 import {selectedSortedOffers, setCurrentCity} from '../features/slices/offers.ts';
 import {SortOptions} from '../components/app/sort-options/sort-options.tsx';
 import Spinner from '../components/app/spinner/spinner.tsx';
+import Navigation from '../components/app/navigation/navigation.tsx';
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
@@ -16,7 +17,9 @@ function Main(): JSX.Element {
   const status = useAppSelector((state) => state.offers.status);
   const currentCity = useAppSelector((state) => state.offers.currentCity);
   const sortOffers = useAppSelector(selectedSortedOffers);
-  const filteredOffers = sortOffers.filter((offer) => offer.city.name === currentCity);
+  const offersByCity = sortOffers.filter((offer) => offer.city.name === currentCity);
+  const {pathName} = useLocation() as unknown as {pathName: AppRoute};
+
 
   const [activeOffer, setActiveOffer] = useState<OfferCardType | null>(null);
 
@@ -42,23 +45,7 @@ function Main(): JSX.Element {
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
               </a>
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <Navigation pathName={pathName} />
           </div>
         </div>
       </header>
@@ -87,14 +74,14 @@ function Main(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{filteredOffers.length} places to stay in {currentCity}</b>
+              <b className="places__found">{offersByCity.length} places to stay in {currentCity}</b>
               <SortOptions />
               <div className="cities__places-list places__list tabs__content">
-                {filteredOffers.map((offerCard) => (<OfferCard key={offerCard.id} className='cities' offer={offerCard} onHover={() => handleOfferHover(offerCard)}/>))}
+                {offersByCity.map((offerCard) => (<OfferCard key={offerCard.id} className='cities' offer={offerCard} onHover={() => handleOfferHover(offerCard)}/>))}
               </div>
             </section>
             <div className="cities__right-section">
-              <Map offers={filteredOffers} activeOffer={activeOffer} city={filteredOffers[0].city} />
+              <Map offers={offersByCity} activeOffer={activeOffer} city={offersByCity[0].city} />
             </div>
           </div>
         </div>

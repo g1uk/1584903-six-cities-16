@@ -1,20 +1,52 @@
+import * as classNames from 'classnames';
+import {useAppDispatch} from '../hooks';
+import {changeFavorite} from '../../../features/thunks/favorites.ts';
+import {updateOffers} from '../../../features/slices/offers.ts';
+import {offerSlice} from '../../../features/slices/offer.ts';
+
 type FavoriteButtonProps = {
-  className: string;
-  isFavorite: boolean;
+  className?: 'offer' | 'place-card';
+  isFavorite?: boolean;
+  offerId: string;
+  width?: number;
 }
 
-const OFFER_CLASS_NAME = 'offer';
+const enum Default {
+  HeightCoefficient = 18 / 17
+}
 
-export default function FavoriteButton ({className, isFavorite}: FavoriteButtonProps) {
-  const imgWidth = className === OFFER_CLASS_NAME ? 31 : 18;
-  const imgHeight = className === OFFER_CLASS_NAME ? 33 : 19;
+export default function FavoriteButton ({className = 'place-card',
+  isFavorite = false, offerId, width = 18}: FavoriteButtonProps) {
+
+  const dispatch = useAppDispatch();
+  const favoriteLabel = `${isFavorite ? 'In' : 'To'} bookmarks`;
+  const buttonClass = `${className}__bookmark-button`;
+  const favoriteClass = classNames(
+    buttonClass,
+    {
+      [`${buttonClass}--active`]: isFavorite
+    },
+    'button'
+  );
+
+  const height = width * Default.HeightCoefficient;
+
+  function handleClick() {
+    dispatch(changeFavorite({
+      offerId,
+      status: Number(!isFavorite)
+    })).unwrap().then(() => {
+      dispatch(offerSlice.actions.updateOffer(offerId));
+      dispatch(updateOffers(offerId));
+    });
+  }
 
   return (
-    <button className={`${className}__bookmark-button${isFavorite ? `${className}__bookmark-button--active` : ''} button`} type="button">
-      <svg className={`${className}__bookmark-icon`} width={imgWidth} height={imgHeight}>
+    <button className={favoriteClass} onClick={handleClick} type="button">
+      <svg className={`${className}__bookmark-icon`} width={width} height={height}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
-      <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
+      <span className="visually-hidden">{favoriteLabel}</span>
     </button>
   );
 }

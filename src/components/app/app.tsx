@@ -6,14 +6,28 @@ import {AppRoute, AuthorizationStatus} from '../../const.tsx';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import PrivateRoute from './private-route/private-route.tsx';
 import NotFound from '../../pages/not-found.tsx';
-import {getFavoriteOfferCards} from '../../types/offer.ts';
 import {useAppSelector} from './hooks';
+import Spinner from './spinner/spinner.tsx';
+import {getToken} from '../../services/token.ts';
+import {useEffect} from 'react';
+import {checkAuth} from '../../features/thunks/auth.ts';
 
 export default function App(): JSX.Element {
 
-  const offers = useAppSelector((state) => state.offers.offers);
-  console.log(offers)
-  const favoriteOfferCards = getFavoriteOfferCards(offers);
+  const token = getToken();
+  useEffect(() => {
+    if (token) {
+      checkAuth();
+    }
+  }, [token, checkAuth]);
+
+  const isAuthChecked = useAppSelector((state) => state.user.status !== AuthorizationStatus.Unknown);
+
+  if (!isAuthChecked) {
+    return (
+      <Spinner />
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -24,13 +38,17 @@ export default function App(): JSX.Element {
         />
         <Route
           path={AppRoute.Login}
-          element={<Login/>}
+          element={
+            <PrivateRoute onlyUnAuth>
+              <Login/>
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <Favorites favoriteOfferCards={favoriteOfferCards}/>
+            <PrivateRoute>
+              <Favorites />
             </PrivateRoute>
           }
         />
