@@ -4,11 +4,12 @@ import OfferContainer from '../components/app/offer-container/offer-container.ts
 import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
-import {useEffect} from 'react';
-import {fetchNearby, fetchOffer} from '../features/slices/offer.ts';
+import {useEffect, useState} from 'react';
 import {commentsThunks} from '../features/thunks/comments.ts';
 import {RequestStatus} from '../const.tsx';
 import Spinner from '../components/app/spinner/spinner.tsx';
+import {OfferCardType} from '../types/offer.ts';
+import {fetchNearby, fetchOffer} from '../features/thunks/offer.ts';
 
 export default function Offer(): JSX.Element {
   const {id: offerId} = useParams();
@@ -17,6 +18,12 @@ export default function Offer(): JSX.Element {
   const offerPage = useAppSelector((state) => state.offer.info);
   const status = useAppSelector((state) => state.offer.status);
   const nearbyOffers = useAppSelector((state) => state.offer.nearby);
+
+  const [activeOffer, setActiveOffer] = useState<OfferCardType | null>(null);
+
+  const handleOfferHover = (offer?: OfferCardType) => {
+    setActiveOffer(offer || null);
+  };
 
   useEffect(() => {
     Promise.all([
@@ -49,13 +56,13 @@ export default function Offer(): JSX.Element {
             </div>
           </div>
           <OfferContainer offer={offerPage} />
-          <Map offers={nearbyOffers} city={offerPage.city} />
+          <Map offers={nearbyOffers} activeOffer={activeOffer} city={offerPage.city} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {nearbyOffers.map((offerCard) => <OfferCard key={offerCard.id} className='near-places' offer={offerCard} />)}
+              {nearbyOffers.map((offerCard) => <OfferCard key={offerCard.id} className='near-places' offer={offerCard} onHover={() => handleOfferHover(offerCard)} />)}
             </div>
           </section>
         </div>

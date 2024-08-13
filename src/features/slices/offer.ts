@@ -1,7 +1,7 @@
 import {OfferType} from '../../types/offer.ts';
-import {AppRoute, RequestStatus} from '../../const.tsx';
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {AxiosInstance} from 'axios';
+import {RequestStatus} from '../../const.tsx';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {fetchNearby, fetchOffer} from '../thunks/offer.ts';
 
 type OfferState = {
   info: OfferType | null;
@@ -14,18 +14,6 @@ const initialState: OfferState = {
   nearby: [],
   status: RequestStatus.Idle
 };
-
-export const fetchOffer = createAsyncThunk<OfferType, string, {extra: AxiosInstance}>('fetchOffers/one', async (
-  offerId, {extra: api}) => {
-  const response = await api.get<OfferType>(`${AppRoute.Offers}/${offerId}`);
-  return response.data;
-});
-
-export const fetchNearby = createAsyncThunk<OfferType[], string, {extra: AxiosInstance}>('fetchOffers/near', async (
-  offerId, {extra: api}) => {
-  const response = await api.get<OfferType[]>(`${AppRoute.Offers}/${offerId}/nearby`);
-  return response.data;
-});
 
 export const offerSlice = createSlice({
   extraReducers: (builder) => {
@@ -49,6 +37,11 @@ export const offerSlice = createSlice({
     clear(state) {
       state.info = null;
       state.nearby = [];
-    }
+    },
+    updateOffer: (state, action: PayloadAction<string>) => {
+      state.info = state.info?.id === action.payload
+        ? {...state.info, isFavorite: !state.info?.isFavorite}
+        : state.info;
+    },
   }
 });

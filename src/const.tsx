@@ -2,9 +2,11 @@ export enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
+  Favorite = '/favorite',
   Comments = '/comments',
   Offers = '/offers',
-  Offer = '/offer/:id'
+  Offer = '/offer/:id',
+  NotFound = '/not-found'
 }
 
 export enum AuthorizationStatus {
@@ -18,6 +20,11 @@ export const enum RequestStatus {
   Loading = 'Loading',
   Success = 'Success',
   Failed = 'Failed'
+}
+
+export const enum FavoriteStatus {
+  Added = 1,
+  Removed = 0,
 }
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';

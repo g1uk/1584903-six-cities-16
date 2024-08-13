@@ -1,8 +1,8 @@
 import {OfferCardType, OfferType, SortOption} from '../../types/offer.ts';
-import {createAsyncThunk, createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {State} from '../../types/state.ts';
-import {AxiosInstance} from 'axios';
-import {AppRoute, RequestStatus} from '../../const.tsx';
+import {RequestStatus} from '../../const.tsx';
+import {fetchOffers} from '../thunks/offers.ts';
 
 type OffersState = {
   activeId?: OfferType['id'] | null;
@@ -20,22 +20,17 @@ const initialState: OffersState = {
   status: RequestStatus.Idle,
 };
 
-export const loadOffers = createAsyncThunk<OfferCardType[], void, {extra: AxiosInstance}>('fetchOffers/all', async (_arg, {extra: api}) => {
-  const response = await api.get<OfferCardType[]>(AppRoute.Offers);
-  return response.data;
-});
-
 export const offersSlice = createSlice({
   extraReducers: (builder) =>
     builder
-      .addCase(loadOffers.pending, (state) => {
+      .addCase(fetchOffers.pending, (state) => {
         state.status = RequestStatus.Loading;
       })
-      .addCase(loadOffers.fulfilled, (state, action) => {
+      .addCase(fetchOffers.fulfilled, (state, action) => {
         state.status = RequestStatus.Success;
         state.offers = action.payload;
       })
-      .addCase(loadOffers.rejected, (state) => {
+      .addCase(fetchOffers.rejected, (state) => {
         state.status = RequestStatus.Failed;
       }),
   name: 'offers',
@@ -44,11 +39,14 @@ export const offersSlice = createSlice({
     setActiveId: (state, action: PayloadAction<OfferType['id'] | undefined>) => {
       state.activeId = action.payload;
     },
+    updateOffers: (state, action: PayloadAction<string>) => {
+      state.offers = state.offers.map((offer) =>
+        offer.id === action.payload
+          ? {...offer, isFavorite: !offer.isFavorite}
+          : offer);
+    },
     setCurrentCity: (state, action: PayloadAction<string>) => {
       state.currentCity = action.payload;
-    },
-    setOffers: (state, action: PayloadAction<OfferCardType[]>) => {
-      state.offers = action.payload;
     },
     setSortOption: (state, action: PayloadAction<SortOption>) => {
       state.sortOption = action.payload;
@@ -56,11 +54,7 @@ export const offersSlice = createSlice({
   }
 });
 
-export const {setCurrentCity, setOffers, setSortOption} = offersSlice.actions;
-
-// export const getOffers = () => (dispatch: AppDispatch) => {
-//   dispatch(setOffers(offers));
-// };
+export const {setCurrentCity, setSortOption, updateOffers} = offersSlice.actions;
 
 export const selectedSortedOffers = createSelector(
   (state: State) => state.offers.offers,

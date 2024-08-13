@@ -9,7 +9,8 @@ type OfferContainerProps = {
 }
 
 export default function OfferContainer({offer}: OfferContainerProps) {
-  const {isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description} = offer;
+  const {isPremium, title, isFavorite, rating, type, bedrooms,
+    maxAdults, price, goods, host, description} = offer;
 
   return (
     <div className="offer__container container">
@@ -23,7 +24,7 @@ export default function OfferContainer({offer}: OfferContainerProps) {
           <h1 className="offer__name">
             {title}
           </h1>
-          <FavoriteButton className="offer" isFavorite={isFavorite}/>
+          <FavoriteButton className="offer" isFavorite={isFavorite} offerId={offer.id}/>
         </div>
         <div className="offer__rating rating">
           <div className="offer__stars rating__stars">
