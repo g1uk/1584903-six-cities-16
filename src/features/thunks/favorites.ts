@@ -3,12 +3,6 @@ import {OfferType} from '../../types/offer.ts';
 import {AxiosInstance} from 'axios';
 import {AppRoute, FavoriteStatus} from '../../const.tsx';
 
-export const fetchFavorites = createAsyncThunk<OfferType[], undefined, {extra: AxiosInstance}>('favorite/fetchAll', async (
-  _arg, {extra: api}) => {
-  const response = await api.get<OfferType[]>(AppRoute.Favorites);
-  return response.data;
-});
-
 type ChangeProps = {
   offerId: string;
   status: FavoriteStatus;
@@ -18,6 +12,12 @@ type ChangeResponse = {
   offer: OfferType;
   status: FavoriteStatus;
 }
+
+export const fetchFavorites = createAsyncThunk<OfferType[], undefined, {extra: AxiosInstance}>('favorite/fetchAll', async (
+  _arg, {extra: api}) => {
+  const response = await api.get<OfferType[]>(AppRoute.Favorites);
+  return response.data;
+});
 
 export const changeFavorite = createAsyncThunk<ChangeResponse, ChangeProps, {extra: AxiosInstance}>('favorite/change', async (
   {offerId, status}, {extra: api}) => {

@@ -1,7 +1,7 @@
 import {AppRoute, AuthorizationStatus} from '../../../const.tsx';
 import {Location, Navigate, useLocation} from 'react-router-dom';
 import {useAppSelector} from '../hooks';
-import Spinner from '../spinner/spinner.tsx';
+import Loader from '../loader/loader.tsx';
 
 type PrivateRouteProps = {
   children: JSX.Element;
@@ -20,7 +20,7 @@ export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const userCheckAuth = useAppSelector((state) => state.user.status);
 
   if (userCheckAuth === AuthorizationStatus.Unknown) {
-    return <Spinner />;
+    return <Loader />;
   }
 
   if (onlyUnAuth && user) {

@@ -7,7 +7,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import PrivateRoute from './private-route/private-route.tsx';
 import NotFound from '../../pages/not-found.tsx';
 import {useAppSelector} from './hooks';
-import Spinner from './spinner/spinner.tsx';
+import Loader from './loader/loader.tsx';
 import {getToken} from '../../services/token.ts';
 import {useEffect} from 'react';
 import {checkAuth} from '../../features/thunks/auth.ts';
@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
 
   if (!isAuthChecked) {
     return (
-      <Spinner />
+      <Loader />
     );
   }
 

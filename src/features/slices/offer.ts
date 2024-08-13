@@ -45,3 +45,6 @@ export const offerSlice = createSlice({
     },
   }
 });
+
+export const {updateOffer} = offerSlice.actions;
+

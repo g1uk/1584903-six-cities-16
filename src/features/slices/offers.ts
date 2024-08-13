@@ -5,7 +5,7 @@ import {RequestStatus} from '../../const.tsx';
 import {fetchOffers} from '../thunks/offers.ts';
 
 type OffersState = {
-  activeId?: OfferType['id'] | null;
+  activeOffer?: OfferType | null;
   currentCity: string;
   offers: OfferCardType[];
   sortOption: SortOption;
@@ -13,7 +13,7 @@ type OffersState = {
 }
 
 const initialState: OffersState = {
-  activeId: null,
+  activeOffer: null,
   currentCity: 'Paris',
   offers: [],
   sortOption: 'Popular',
@@ -36,9 +36,6 @@ export const offersSlice = createSlice({
   name: 'offers',
   initialState,
   reducers: {
-    setActiveId: (state, action: PayloadAction<OfferType['id'] | undefined>) => {
-      state.activeId = action.payload;
-    },
     updateOffers: (state, action: PayloadAction<string>) => {
       state.offers = state.offers.map((offer) =>
         offer.id === action.payload
