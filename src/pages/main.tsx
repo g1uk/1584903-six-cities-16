@@ -5,10 +5,11 @@ import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import {useState} from 'react';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
-import {selectedSortedOffers, setCurrentCity} from '../features/slices/offers.ts';
+import {setCurrentCity} from '../features/slices/offers.ts';
 import {SortOptions} from '../components/app/sort-options/sort-options.tsx';
 import Loader from '../components/app/loader/loader.tsx';
 import Header from '../components/app/header/header.tsx';
+import {selectedSortedOffers} from '../features/selectors.ts';
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
@@ -43,7 +44,7 @@ function Main(): JSX.Element {
             <ul className="locations__list tabs__list">
               {CITIES.map((cityName) => (
                 <li key={cityName} className="locations__item" onClick={() => handleCityChange(cityName)}
-                    style={{fontWeight: cityName === currentCity ? 'bold' : 'normal'}}
+                  style={{fontWeight: cityName === currentCity ? 'bold' : 'normal'}}
                 >
                   <Link
                     to={AppRoute.Main}

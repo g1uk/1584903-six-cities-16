@@ -2,7 +2,7 @@ import Main from '../../pages/main.tsx';
 import Favorites from '../../pages/favorites.tsx';
 import Offer from '../../pages/offer.tsx';
 import Login from '../../pages/login.tsx';
-import {AppRoute, AuthorizationStatus} from '../../const.tsx';
+import {AppRoute} from '../../const.tsx';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import PrivateRoute from './private-route/private-route.tsx';
 import NotFound from '../../pages/not-found.tsx';
@@ -11,6 +11,7 @@ import Loader from './loader/loader.tsx';
 import {getToken} from '../../services/token.ts';
 import {useEffect} from 'react';
 import {checkAuth} from '../../features/thunks/auth.ts';
+import {isUserAuthorized} from '../../features/selectors.ts';
 
 export default function App(): JSX.Element {
 
@@ -21,7 +22,7 @@ export default function App(): JSX.Element {
     }
   }, [token, checkAuth]);
 
-  const isAuthChecked = useAppSelector((state) => state.user.status !== AuthorizationStatus.Unknown);
+  const isAuthChecked = useAppSelector(isUserAuthorized);
 
   if (!isAuthChecked) {
     return (

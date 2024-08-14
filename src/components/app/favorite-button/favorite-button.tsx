@@ -3,8 +3,9 @@ import {useAppDispatch, useAppSelector} from '../hooks';
 import {changeFavorite} from '../../../features/thunks/favorites.ts';
 import {updateOffers} from '../../../features/slices/offers.ts';
 import {updateOffer} from '../../../features/slices/offer.ts';
-import {AppRoute, AuthorizationStatus} from '../../../const.tsx';
+import {AppRoute} from '../../../const.tsx';
 import {useNavigate} from 'react-router-dom';
+import {isUserAuthorized} from '../../../features/selectors.ts';
 
 type FavoriteButtonProps = {
   className?: 'offer' | 'place-card';
@@ -22,7 +23,7 @@ export default function FavoriteButton ({className = 'place-card',
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isUserAuth = useAppSelector((state) => state.user.status !== AuthorizationStatus.NoAuth);
+  const isUserAuth = useAppSelector(isUserAuthorized);
   const favoriteLabel = `${isFavorite ? 'In' : 'To'} bookmarks`;
   const buttonClass = `${className}__bookmark-button`;
   const favoriteClass = classNames(

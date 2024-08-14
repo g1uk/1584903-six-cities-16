@@ -2,10 +2,11 @@ import {useAppDispatch, useAppSelector} from '../hooks';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../../const.tsx';
 import {logout} from '../../../features/thunks/auth.ts';
+import {getFavorites, getUser} from '../../../features/selectors.ts';
 
 export default function LoggedNavigation() {
-  const user = useAppSelector((state) => state.user.info);
-  const favoriteOffers = useAppSelector((state) => state.favorites.items);
+  const user = useAppSelector(getUser);
+  const favoriteOffers = useAppSelector(getFavorites);
   const dispatch = useAppDispatch();
 
   return (

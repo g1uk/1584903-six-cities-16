@@ -2,6 +2,7 @@ import {AppRoute, AuthorizationStatus} from '../../../const.tsx';
 import {Location, Navigate, useLocation} from 'react-router-dom';
 import {useAppSelector} from '../hooks';
 import Loader from '../loader/loader.tsx';
+import {getUser, getUserStatus} from '../../../features/selectors.ts';
 
 type PrivateRouteProps = {
   children: JSX.Element;
@@ -16,8 +17,8 @@ export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const {children, onlyUnAuth} = props;
   const location: Location<FromState> = useLocation() as Location<FromState>;
 
-  const user = useAppSelector((state) => state.user.info);
-  const userCheckAuth = useAppSelector((state) => state.user.status);
+  const user = useAppSelector(getUser);
+  const userCheckAuth = useAppSelector(getUserStatus);
 
   if (userCheckAuth === AuthorizationStatus.Unknown) {
     return <Loader />;
