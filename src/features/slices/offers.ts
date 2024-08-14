@@ -1,6 +1,5 @@
 import {OfferCardType, OfferType, SortOption} from '../../types/offer.ts';
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {State} from '../../types/state.ts';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RequestStatus} from '../../const.tsx';
 import {fetchOffers} from '../thunks/offers.ts';
 
@@ -52,20 +51,3 @@ export const offersSlice = createSlice({
 });
 
 export const {setCurrentCity, setSortOption, updateOffers} = offersSlice.actions;
-
-export const selectedSortedOffers = createSelector(
-  (state: State) => state.offers.offers,
-  (state: State) => state.offers.sortOption,
-  (offerCards, sortOption) => {
-    switch (sortOption) {
-      case 'Price: low to high':
-        return [...offerCards].sort((a, b) => a.price - b.price);
-      case 'Price: high to low':
-        return [...offerCards].sort((a, b) => b.price - a.price);
-      case 'Top rated first':
-        return [...offerCards].sort((a, b) => b.rating - a.rating);
-      default:
-        return offerCards;
-    }
-  }
-);

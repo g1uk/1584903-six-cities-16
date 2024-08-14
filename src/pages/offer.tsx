@@ -11,15 +11,17 @@ import Loader from '../components/app/loader/loader.tsx';
 import {fetchNearby, fetchOffer} from '../features/thunks/offer.ts';
 import {OfferType} from '../types/offer.ts';
 import Header from '../components/app/header/header.tsx';
+import {getNearbyOffers, getOffer, getOffersStatus} from '../features/selectors.ts';
 
 export default function Offer(): JSX.Element {
   const {id: offerId} = useParams();
 
   const dispatch = useAppDispatch();
-  const offerPage = useAppSelector((state) => state.offer.info);
-  const status = useAppSelector((state) => state.offer.status);
-  const nearbyOffers = useAppSelector((state) => state.offer.nearby).slice(0, 3);
-  nearbyOffers.push(offerPage as OfferType);
+  const offerPage = useAppSelector(getOffer);
+  const status = useAppSelector(getOffersStatus);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const nearbyOffersWithCurrent = nearbyOffers.slice(0);
+  nearbyOffersWithCurrent.push(offerPage as OfferType);
 
   useEffect(() => {
     Promise.all([
@@ -54,14 +56,13 @@ export default function Offer(): JSX.Element {
               </div>
             </div>
             <OfferContainer offer={offerPage}/>
-            <Map offers={nearbyOffers} activeOffer={offerPage} city={offerPage.city}/>
+            <Map offers={nearbyOffersWithCurrent} activeOffer={offerPage} city={offerPage.city}/>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                {nearbyOffers.map((offerCard) => <OfferCard key={offerCard.id} className='near-places'
-                                                            offer={offerCard}/>)}
+                {nearbyOffers.map((offerCard) => (<OfferCard key={offerCard.id} className="near-places" offer={offerCard}/>))}
               </div>
             </section>
           </div>
