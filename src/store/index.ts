@@ -4,7 +4,6 @@ import {createAPI} from '../services/api.ts';
 import {offerSlice} from '../features/slices/offer.ts';
 import {reviewSlice} from '../features/slices/reviews.ts';
 import {userSlice} from '../features/slices/user.ts';
-import {redirect} from './redirect.ts';
 import {favoriteSlice} from '../features/slices/favorites.ts';
 
 export const reducer = combineReducers({
@@ -21,7 +20,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       thunk: {
         extraArgument: createAPI()}
-    }).concat(redirect),
+    })
 });
 
 

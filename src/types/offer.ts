@@ -37,7 +37,3 @@ export type OfferType = OfferCardType & {
 };
 
 export type SortOption = 'Popular' | 'Price: low to high' | 'Price: high to low' | 'Top rated first';
-
-export const getFavoriteOfferCards = (offers: OfferCardType[]) => offers.filter((offerCard) => offerCard.isFavorite);
-export const getNearOfferCardsById = (offers: OfferType[], offerId: string | undefined) => offers.filter((offer) => offer.id !== offerId).slice(0, 3);
-export const getOfferById = (offers: OfferType[], offerId: string | undefined) => offers.find((offer) => offer.id === offerId);

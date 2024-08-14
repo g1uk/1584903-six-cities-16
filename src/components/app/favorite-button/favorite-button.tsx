@@ -1,8 +1,10 @@
 import * as classNames from 'classnames';
-import {useAppDispatch} from '../hooks';
+import {useAppDispatch, useAppSelector} from '../hooks';
 import {changeFavorite} from '../../../features/thunks/favorites.ts';
 import {updateOffers} from '../../../features/slices/offers.ts';
-import {offerSlice} from '../../../features/slices/offer.ts';
+import {updateOffer} from '../../../features/slices/offer.ts';
+import {AppRoute, AuthorizationStatus} from '../../../const.tsx';
+import {useNavigate} from 'react-router-dom';
 
 type FavoriteButtonProps = {
   className?: 'offer' | 'place-card';
@@ -19,6 +21,8 @@ export default function FavoriteButton ({className = 'place-card',
   isFavorite = false, offerId, width = 18}: FavoriteButtonProps) {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isUserAuth = useAppSelector((state) => state.user.status !== AuthorizationStatus.NoAuth);
   const favoriteLabel = `${isFavorite ? 'In' : 'To'} bookmarks`;
   const buttonClass = `${className}__bookmark-button`;
   const favoriteClass = classNames(
@@ -32,11 +36,14 @@ export default function FavoriteButton ({className = 'place-card',
   const height = width * Default.HeightCoefficient;
 
   function handleClick() {
+    if (!isUserAuth) {
+      return navigate(AppRoute.Login);
+    }
     dispatch(changeFavorite({
       offerId,
       status: Number(!isFavorite)
     })).unwrap().then(() => {
-      dispatch(offerSlice.actions.updateOffer(offerId));
+      dispatch(updateOffer(offerId));
       dispatch(updateOffers(offerId));
     });
   }

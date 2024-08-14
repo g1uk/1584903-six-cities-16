@@ -53,7 +53,7 @@ export default function OfferContainer({offer}: OfferContainerProps) {
           <ul className="offer__inside-list">
             {goods.map((goodsItem) => (
               <li key={goodsItem} className="offer__inside-item">
-                ${goodsItem}
+                {goodsItem}
               </li>
             ))}
           </ul>

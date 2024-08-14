@@ -4,12 +4,13 @@ import OfferContainer from '../components/app/offer-container/offer-container.ts
 import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {commentsThunks} from '../features/thunks/comments.ts';
 import {RequestStatus} from '../const.tsx';
-import Spinner from '../components/app/spinner/spinner.tsx';
-import {OfferCardType} from '../types/offer.ts';
+import Loader from '../components/app/loader/loader.tsx';
 import {fetchNearby, fetchOffer} from '../features/thunks/offer.ts';
+import {OfferType} from '../types/offer.ts';
+import Header from '../components/app/header/header.tsx';
 
 export default function Offer(): JSX.Element {
   const {id: offerId} = useParams();
@@ -17,13 +18,8 @@ export default function Offer(): JSX.Element {
   const dispatch = useAppDispatch();
   const offerPage = useAppSelector((state) => state.offer.info);
   const status = useAppSelector((state) => state.offer.status);
-  const nearbyOffers = useAppSelector((state) => state.offer.nearby);
-
-  const [activeOffer, setActiveOffer] = useState<OfferCardType | null>(null);
-
-  const handleOfferHover = (offer?: OfferCardType) => {
-    setActiveOffer(offer || null);
-  };
+  const nearbyOffers = useAppSelector((state) => state.offer.nearby).slice(0, 3);
+  nearbyOffers.push(offerPage as OfferType);
 
   useEffect(() => {
     Promise.all([
@@ -33,7 +29,7 @@ export default function Offer(): JSX.Element {
   }, [fetchOffer, fetchNearby, commentsThunks.fetchComments, offerId]);
 
   if (status === RequestStatus.Loading) {
-    return <Spinner />;
+    return <Loader />;
   }
 
   if (status === RequestStatus.Failed || !offerPage) {
@@ -41,32 +37,36 @@ export default function Offer(): JSX.Element {
   }
 
   return (
-    <div className="page">
-      <main className="page__main page__main--offer">
-        <section className="offer">
-          <div className="offer__gallery-container container">
-            <div className="offer__gallery">
-              {
-                offerPage.images.map((image) => (
-                  <div key={image} className="offer__image-wrapper">
-                    <img className="offer__image" src={image} alt="Photo studio"/>
-                  </div>
-                ))
-              }
+    <>
+      <Header/>
+      <div className="page">
+        <main className="page__main page__main--offer">
+          <section className="offer">
+            <div className="offer__gallery-container container">
+              <div className="offer__gallery">
+                {
+                  offerPage.images.map((image) => (
+                    <div key={image} className="offer__image-wrapper">
+                      <img className="offer__image" src={image} alt="Photo studio"/>
+                    </div>
+                  ))
+                }
+              </div>
             </div>
-          </div>
-          <OfferContainer offer={offerPage} />
-          <Map offers={nearbyOffers} activeOffer={activeOffer} city={offerPage.city} />
-        </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {nearbyOffers.map((offerCard) => <OfferCard key={offerCard.id} className='near-places' offer={offerCard} onHover={() => handleOfferHover(offerCard)} />)}
-            </div>
+            <OfferContainer offer={offerPage}/>
+            <Map offers={nearbyOffers} activeOffer={offerPage} city={offerPage.city}/>
           </section>
-        </div>
-      </main>
-    </div>
+          <div className="container">
+            <section className="near-places places">
+              <h2 className="near-places__title">Other places in the neighbourhood</h2>
+              <div className="near-places__list places__list">
+                {nearbyOffers.map((offerCard) => <OfferCard key={offerCard.id} className='near-places'
+                                                            offer={offerCard}/>)}
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
