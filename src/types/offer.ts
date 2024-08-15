@@ -11,7 +11,7 @@ export type CityType = {
   location: LocationType;
 }
 
-type OfferTemplateType = {
+export type OfferType = {
   id: string;
   title: string;
   type: string;
@@ -21,13 +21,7 @@ type OfferTemplateType = {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
-}
-
-export type OfferCardType = OfferTemplateType & {
   previewImage: string;
-};
-
-export type OfferType = OfferCardType & {
   description: string;
   bedrooms: number;
   goods: string[];

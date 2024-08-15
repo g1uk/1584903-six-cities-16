@@ -2,11 +2,11 @@ import {useEffect, useRef} from 'react';
 import useMap from '../hooks/use-map.tsx';
 import leaflet, {LayerGroup} from 'leaflet';
 import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../../const.tsx';
-import {CityType, OfferCardType} from '../../../types/offer.ts';
+import {CityType, OfferType} from '../../../types/offer.ts';
 
 type MapProps = {
-  offers: OfferCardType[];
-  activeOffer?: OfferCardType | null;
+  offers: OfferType[];
+  activeOffer?: OfferType | null;
   city: CityType;
 }
 

@@ -8,7 +8,8 @@ export const getNearbyOffers = createDraftSafeSelector(selectSafe, (state) => st
 export const getOffersSortOption = createDraftSafeSelector(selectSafe, (state) => state.offers.sortOption);
 export const getOffer = createDraftSafeSelector(selectSafe, (state) => state.offer.info);
 export const getCurrentCity = createDraftSafeSelector(selectSafe, (state) => state.offers.currentCity);
-export const isUserAuthorized = createDraftSafeSelector(selectSafe, (state) => state.user.status !== AuthorizationStatus.Unknown);
+export const isUserCheckAuth = createDraftSafeSelector(selectSafe, (state) => state.user.status !== AuthorizationStatus.Unknown);
+export const isUserAuthorized = createDraftSafeSelector(selectSafe, (state) => state.user.status === AuthorizationStatus.Auth);
 export const getUserStatus = createDraftSafeSelector(selectSafe, (state) => state.user.status);
 export const getUser = createDraftSafeSelector(selectSafe, (state) => state.user.info);
 export const getFavorites = createDraftSafeSelector(selectSafe, (state) => state.favorites.items);

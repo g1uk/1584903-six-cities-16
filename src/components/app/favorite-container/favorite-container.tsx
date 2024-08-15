@@ -1,11 +1,11 @@
-import {OfferCardType} from '../../../types/offer.ts';
+import {OfferType} from '../../../types/offer.ts';
 import {getOfferCardsByCity} from '../../../utils/util.ts';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../../const.tsx';
 import {OfferCard} from '../offer-card/offer-card.tsx';
 
 type FavoriteContainerProps = {
-  favoriteOfferCards: OfferCardType[];
+  favoriteOfferCards: OfferType[];
 }
 
 export default function FavoriteContainer ({favoriteOfferCards}: FavoriteContainerProps) {

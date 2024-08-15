@@ -5,7 +5,7 @@ import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
 import {useEffect} from 'react';
-import {commentsThunks} from '../features/thunks/comments.ts';
+import {fetchComments} from '../features/thunks/comments.ts';
 import {RequestStatus} from '../const.tsx';
 import Loader from '../components/app/loader/loader.tsx';
 import {fetchNearby, fetchOffer} from '../features/thunks/offer.ts';
@@ -27,8 +27,8 @@ export default function Offer(): JSX.Element {
     Promise.all([
       dispatch(fetchOffer(offerId as string)),
       dispatch(fetchNearby(offerId as string)),
-      dispatch(commentsThunks.fetchComments(offerId as string))]);
-  }, [fetchOffer, fetchNearby, commentsThunks.fetchComments, offerId]);
+      dispatch(fetchComments(offerId as string))]);
+  }, [fetchOffer, fetchNearby, fetchComments, offerId]);
 
   if (status === RequestStatus.Loading) {
     return <Loader />;
