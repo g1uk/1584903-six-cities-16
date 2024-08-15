@@ -30,3 +30,5 @@ export const enum FavoriteStatus {
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const AUTH_TOKEN_KEY = 'six-cities';
+export const MIN_CHARACTERS = 50;
+export const MAX_CHARACTERS = 300;

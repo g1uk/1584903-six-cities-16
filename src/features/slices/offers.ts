@@ -1,4 +1,4 @@
-import {OfferCardType, OfferType, SortOption} from '../../types/offer.ts';
+import {OfferType, SortOption} from '../../types/offer.ts';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RequestStatus} from '../../const.tsx';
 import {fetchOffers} from '../thunks/offers.ts';
@@ -6,7 +6,7 @@ import {fetchOffers} from '../thunks/offers.ts';
 type OffersState = {
   activeOffer?: OfferType | null;
   currentCity: string;
-  offers: OfferCardType[];
+  offers: OfferType[];
   sortOption: SortOption;
   status: RequestStatus;
 }

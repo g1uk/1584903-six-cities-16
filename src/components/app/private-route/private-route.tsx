@@ -1,5 +1,5 @@
 import {AppRoute, AuthorizationStatus} from '../../../const.tsx';
-import {Location, Navigate, useLocation} from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import {useAppSelector} from '../hooks';
 import Loader from '../loader/loader.tsx';
 import {getUser, getUserStatus} from '../../../features/selectors.ts';
@@ -9,14 +9,9 @@ type PrivateRouteProps = {
   onlyUnAuth?: boolean;
 };
 
-type FromState = {
-  from?: Location;
-}
-
 export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const {children, onlyUnAuth} = props;
-  const location: Location<FromState> = useLocation() as Location<FromState>;
-
+  const navigate = useNavigate();
   const user = useAppSelector(getUser);
   const userCheckAuth = useAppSelector(getUserStatus);
 
@@ -25,12 +20,14 @@ export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   }
 
   if (onlyUnAuth && user) {
-    const from = location.state?.from || {pathname: AppRoute.Main};
-    return <Navigate to={from} />;
+    if (window.history?.length && window.history.length > 1) {
+      navigate(-1);
+    }
+    return <Navigate to={AppRoute.Main} />;
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate state={{from: location}} to={AppRoute.Login} />;
+    return <Navigate to={AppRoute.Login} />;
   }
 
   return children;

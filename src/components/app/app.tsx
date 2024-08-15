@@ -11,7 +11,7 @@ import Loader from './loader/loader.tsx';
 import {getToken} from '../../services/token.ts';
 import {useEffect} from 'react';
 import {checkAuth} from '../../features/thunks/auth.ts';
-import {isUserAuthorized} from '../../features/selectors.ts';
+import {isUserCheckAuth} from '../../features/selectors.ts';
 
 export default function App(): JSX.Element {
 
@@ -22,7 +22,7 @@ export default function App(): JSX.Element {
     }
   }, [token, checkAuth]);
 
-  const isAuthChecked = useAppSelector(isUserAuthorized);
+  const isAuthChecked = useAppSelector(isUserCheckAuth);
 
   if (!isAuthChecked) {
     return (

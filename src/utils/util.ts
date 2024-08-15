@@ -1,4 +1,4 @@
-import {OfferCardType} from '../types/offer.ts';
+import {OfferType} from '../types/offer.ts';
 
 export const getMarkupRating = (rating: number) => {
   const ratingInPercent = `${(Math.floor(rating) / 5) * 100}%`;
@@ -8,10 +8,10 @@ export const getMarkupRating = (rating: number) => {
 export const upFirstLetter = (str: string) => `${str[0].toUpperCase()}${str.slice(1)}`;
 
 type OffersByCityType = {
-  [key: string]: OfferCardType[];
+  [key: string]: OfferType[];
 }
 
-export const getOfferCardsByCity = (offerCards: OfferCardType[]) => {
+export const getOfferCardsByCity = (offerCards: OfferType[]) => {
   const cardsByCity: OffersByCityType = {};
 
   for (const card of offerCards) {

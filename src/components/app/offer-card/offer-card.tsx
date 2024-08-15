@@ -1,12 +1,12 @@
 import {Link} from 'react-router-dom';
 import {getMarkupRating, upFirstLetter} from '../../../utils/util.ts';
 import FavoriteButton from '../favorite-button/favorite-button.tsx';
-import {OfferCardType} from '../../../types/offer.ts';
+import {OfferType} from '../../../types/offer.ts';
 
 type OfferCardProps = {
   className: string;
-  offer: OfferCardType;
-  onHover?: (offer?: OfferCardType) => void;
+  offer: OfferType;
+  onHover?: (offer?: OfferType) => void;
 }
 
 const FAVORITES_CLASS_NAME = 'favorites';
@@ -17,7 +17,7 @@ export function OfferCard({className, offer, onHover}: OfferCardProps): JSX.Elem
   const cardInfoClassName = className === FAVORITES_CLASS_NAME ? 'favorites__card-info' : '';
   const {previewImage, price, isFavorite, rating, title, type} = offer;
 
-  const handleOfferHover = (offerCard: OfferCardType) => {
+  const handleOfferHover = (offerCard: OfferType) => {
     if (onHover) {
       onHover(offerCard);
     }
