@@ -4,14 +4,14 @@ import OfferContainer from '../components/app/offer-container/offer-container.ts
 import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
-import {useEffect} from 'react';
+import {Fragment, useEffect} from 'react';
 import {fetchComments} from '../features/thunks/comments.ts';
 import {RequestStatus} from '../const.tsx';
 import Loader from '../components/app/loader/loader.tsx';
 import {fetchNearby, fetchOffer} from '../features/thunks/offer.ts';
 import {OfferType} from '../types/offer.ts';
-import Header from '../components/app/header/header.tsx';
 import {getNearbyOffers, getOffer, getOffersStatus} from '../features/selectors.ts';
+import Header from '../components/app/header/header.tsx';
 
 export default function Offer(): JSX.Element {
   const {id: offerId} = useParams();
@@ -39,8 +39,8 @@ export default function Offer(): JSX.Element {
   }
 
   return (
-    <>
-      <Header/>
+    <Fragment>
+      <Header />
       <div className="page">
         <main className="page__main page__main--offer">
           <section className="offer">
@@ -68,6 +68,6 @@ export default function Offer(): JSX.Element {
           </div>
         </main>
       </div>
-    </>
+    </Fragment>
   );
 }

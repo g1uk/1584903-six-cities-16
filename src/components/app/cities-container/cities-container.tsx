@@ -25,7 +25,7 @@ export default function CitiesContainer ({currentCity}: CitiesContainerProps) {
           >
             <Link
               to={AppRoute.Main}
-              className={`locations__item-link tabs__item${currentCity === cityName ? 'tabs__item--active' : ''}`}
+              className={`locations__item-link tabs__item ${currentCity === cityName ? 'tabs__item--active' : ''}`}
             >
               <span>{cityName}</span>
             </Link>

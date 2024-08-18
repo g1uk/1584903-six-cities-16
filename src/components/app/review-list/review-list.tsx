@@ -13,7 +13,7 @@ const sortOffersByDate = (a: Review, b: Review) => (new Date(b.date)).getTime() 
 
 export default function ReviewList ({offerId}: ReviewListProps) {
   const reviews = useAppSelector(getReviews);
-  const offerReviews = getReviewsByOfferId(reviews, offerId).sort(sortOffersByDate);
+  const offerReviews = getReviewsByOfferId(reviews, offerId).sort(sortOffersByDate).slice(0, 10);
   const isUserAuth = useAppSelector(isUserAuthorized);
 
   return (

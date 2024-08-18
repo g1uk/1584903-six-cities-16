@@ -15,7 +15,7 @@ type ChangeResponse = {
 
 export const fetchFavorites = createAsyncThunk<OfferType[], undefined, {extra: AxiosInstance}>('favorite/fetchAll', async (
   _arg, {extra: api}) => {
-  const response = await api.get<OfferType[]>(AppRoute.Favorites);
+  const response = await api.get<OfferType[]>(AppRoute.Favorite);
   return response.data;
 });
 
