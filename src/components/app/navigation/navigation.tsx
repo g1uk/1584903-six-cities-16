@@ -24,10 +24,10 @@ export default function Navigation({pathName}: NavigationProps) {
       ) : (
         <ul className="header__nav-list">
           <li className="header__nav-item">
-            <Link className="header__nav-link" to={AppRoute.Login}>
+            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
               <div className="header__avatar-wrapper user__avatar-wrapper">
               </div>
-              <span className="header__signout">Sign in</span>
+              <span className="header__login">Sign in</span>
             </Link>
           </li>
         </ul>

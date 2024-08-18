@@ -20,17 +20,23 @@ export function OfferCard({className, offer, onHover}: OfferCardProps): JSX.Elem
   const handleOfferHover = (offerCard: OfferType) => {
     if (onHover) {
       onHover(offerCard);
+      console.log(getMarkupRating(rating))
     }
   };
 
   return (
     <article className={`${className}__card place-card`} onMouseEnter={() => handleOfferHover(offer)}>
+      {offer.isPremium ? (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      ) : null}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={previewImage} width={imgWidth} height={imgHeight} alt="Place image"/>
         </Link>
       </div>
-      <div className={`${cardInfoClassName}place-card__info`}>
+      <div className={`${cardInfoClassName} place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>

@@ -31,3 +31,5 @@ export type OfferType = {
 };
 
 export type SortOption = 'Popular' | 'Price: low to high' | 'Price: high to low' | 'Top rated first';
+
+export const getPlaceName = (count: number) => `${count} place${count > 1 ? 's' : ''}`;

@@ -1,6 +1,6 @@
 import {FormEvent, Fragment, useState} from 'react';
 import * as React from 'react';
-import {getStarsText} from '../../../types/review-type.ts';
+import {getStarsText, getStarsTitle} from '../../../types/review-type.ts';
 import {useAppDispatch} from '../hooks';
 import {postComment} from '../../../features/thunks/comments.ts';
 import {OfferType} from '../../../types/offer.ts';
@@ -40,6 +40,8 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
       rating: rating,
       comment: comment
     }, offerId}));
+    setComment('');
+    setRating(0);
   }
 
   return (
@@ -52,7 +54,7 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
         {NUMBERS.map((num) => (
           <Fragment key={num}>
             <input className="form__rating-input visually-hidden" name="rating" value={num} id={getStarsText(num)} type="radio"/>
-            <label htmlFor={getStarsText(num)} className="reviews__rating-label form__rating-label" title="perfect">
+            <label htmlFor={getStarsText(num)} className="reviews__rating-label form__rating-label" title={getStarsTitle(num)}>
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
               </svg>
