@@ -38,7 +38,7 @@ export const userSlice = createSlice({
     builder.addCase(login.fulfilled, processSuccess);
     builder.addCase(login.rejected, processFailed);
     builder.addCase(login.pending, processLoading);
-    builder.addCase(logout.fulfilled, state => {
+    builder.addCase(logout.fulfilled, (state) => {
       state.info = null;
       state.status = AuthorizationStatus.NoAuth;
     });
@@ -46,4 +46,4 @@ export const userSlice = createSlice({
   initialState,
   name: 'user',
   reducers: {}
-})
+});
