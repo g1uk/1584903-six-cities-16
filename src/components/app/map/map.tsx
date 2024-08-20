@@ -8,9 +8,10 @@ type MapProps = {
   offers: OfferType[];
   activeOffer?: OfferType | null;
   city: CityType;
+  isMainMap?: boolean;
 }
 
-export default function Map({offers, activeOffer, city}: MapProps) {
+export default function Map({offers, activeOffer, city, isMainMap}: MapProps) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const markerLayer = useRef<LayerGroup>(leaflet.layerGroup());
@@ -58,7 +59,7 @@ export default function Map({offers, activeOffer, city}: MapProps) {
   return (
     <section
       className="cities__map map"
-      style={{height: '500px'}}
+      style={{height: isMainMap ? 'auto' : '500px'}}
       ref={mapRef}
     >
     </section>

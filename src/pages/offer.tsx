@@ -4,7 +4,7 @@ import OfferContainer from '../components/app/offer-container/offer-container.ts
 import {OfferCard} from '../components/app/offer-card/offer-card.tsx';
 import Map from '../components/app/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../components/app/hooks';
-import {Fragment, useEffect} from 'react';
+import {useEffect} from 'react';
 import {fetchComments} from '../features/thunks/comments.ts';
 import {RequestStatus} from '../const.tsx';
 import Loader from '../components/app/loader/loader.tsx';
@@ -39,35 +39,33 @@ export default function Offer(): JSX.Element {
   }
 
   return (
-    <Fragment>
+    <div className="page">
       <Header />
-      <div className="page">
-        <main className="page__main page__main--offer">
-          <section className="offer">
-            <div className="offer__gallery-container container">
-              <div className="offer__gallery">
-                {
-                  offerPage.images.map((image) => (
-                    <div key={image} className="offer__image-wrapper">
-                      <img className="offer__image" src={image} alt="Photo studio"/>
-                    </div>
-                  ))
-                }
-              </div>
+      <main className="page__main page__main--offer">
+        <section className="offer">
+          <div className="offer__gallery-container container">
+            <div className="offer__gallery">
+              {
+                offerPage.images.map((image) => (
+                  <div key={image} className="offer__image-wrapper">
+                    <img className="offer__image" src={image} alt="Photo studio"/>
+                  </div>
+                ))
+              }
             </div>
-            <OfferContainer offer={offerPage}/>
-            <Map offers={nearbyOffersWithCurrent} activeOffer={offerPage} city={offerPage.city}/>
-          </section>
-          <div className="container">
-            <section className="near-places places">
-              <h2 className="near-places__title">Other places in the neighbourhood</h2>
-              <div className="near-places__list places__list">
-                {nearbyOffers.map((offerCard) => (<OfferCard key={offerCard.id} className="near-places" offer={offerCard}/>))}
-              </div>
-            </section>
           </div>
-        </main>
-      </div>
-    </Fragment>
+          <OfferContainer offer={offerPage}/>
+          <Map offers={nearbyOffersWithCurrent} activeOffer={offerPage} city={offerPage.city}/>
+        </section>
+        <div className="container">
+          <section className="near-places places">
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
+            <div className="near-places__list places__list">
+              {nearbyOffers.map((offerCard) => (<OfferCard key={offerCard.id} className="near-places" offer={offerCard}/>))}
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 }
