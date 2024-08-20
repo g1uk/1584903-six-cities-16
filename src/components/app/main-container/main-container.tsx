@@ -27,7 +27,7 @@ export default function MainContainer ({offersByCity, currentCity}: MainContaine
         </div>
       </section>
       <div className="cities__right-section">
-        <Map offers={offersByCity} activeOffer={activeOffer} city={offersByCity[0].city}/>
+        <Map offers={offersByCity} activeOffer={activeOffer} city={offersByCity[0].city} isMainMap/>
       </div>
     </div>
   );

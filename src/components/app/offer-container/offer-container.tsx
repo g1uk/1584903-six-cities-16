@@ -24,7 +24,7 @@ export default function OfferContainer({offer}: OfferContainerProps) {
           <h1 className="offer__name">
             {title}
           </h1>
-          <FavoriteButton className="offer" isFavorite={isFavorite} offerId={offer.id}/>
+          <FavoriteButton className="offer" isFavorite={isFavorite} offerId={offer.id} width={31}/>
         </div>
         <div className="offer__rating rating">
           <div className="offer__stars rating__stars">

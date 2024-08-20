@@ -20,7 +20,6 @@ export function OfferCard({className, offer, onHover}: OfferCardProps): JSX.Elem
   const handleOfferHover = (offerCard: OfferType) => {
     if (onHover) {
       onHover(offerCard);
-      console.log(getMarkupRating(rating))
     }
   };
 

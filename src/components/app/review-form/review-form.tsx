@@ -22,6 +22,7 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
   const [comment, setComment] = useState('');
   const [count, setCount] = useState(MIN_CHARACTERS);
   const dispatch = useAppDispatch();
+  let isDisabled = false;
 
   const onRatingChange = (evt: React.FormEvent) => {
     if (evt.target instanceof HTMLInputElement) {
@@ -33,15 +34,19 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
     setCount(MIN_CHARACTERS - evt.target.value.length);
   };
 
-  // не могу понять как очистить форму после отправки комментария
   function handleSubmit(event: FormEvent<HTMLCommentForm>) {
     event.preventDefault();
+    isDisabled = true;
     dispatch(postComment({body: {
       rating: rating,
       comment: comment
-    }, offerId}));
-    setComment('');
-    setRating(0);
+    }, offerId})).then(() => {
+      isDisabled = false;
+      setComment('');
+      setRating(0);
+    }).catch(() => {
+      isDisabled = false;
+    });
   }
 
   return (
@@ -53,7 +58,7 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
       >
         {NUMBERS.map((num) => (
           <Fragment key={num}>
-            <input className="form__rating-input visually-hidden" name="rating" value={num} id={getStarsText(num)} type="radio"/>
+            <input className="form__rating-input visually-hidden" name="rating" value={num} id={getStarsText(num)} type="radio" checked={rating > 0} disabled={isDisabled}/>
             <label htmlFor={getStarsText(num)} className="reviews__rating-label form__rating-label" title={getStarsTitle(num)}>
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
@@ -70,13 +75,14 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
         onChange={onTextChange}
         maxLength={MAX_CHARACTERS}
         minLength={MIN_CHARACTERS}
+        value={comment}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay
           with at least <b className="reviews__text-amount">{count > 0 ? count : 0} characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={comment.length < MIN_CHARACTERS || rating === 0}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabled || comment.length < MIN_CHARACTERS || rating === 0}>Submit</button>
       </div>
     </form>
   );
